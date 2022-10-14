@@ -12,7 +12,7 @@ class UserController {
       return res.status(StatusCodes.OK).json({ token });
     } catch (error) {
       const e = error as Error;
-      return res.status(StatusCodes.NOT_FOUND).json({ message: e.message });
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: e.message });
     }
   };
 }

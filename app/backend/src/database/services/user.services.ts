@@ -7,12 +7,12 @@ class UserService {
   findUser = async (email: string, password: string): Promise<string> => {
     const user = await Users.findOne({ where: { email }, raw: true }) as IUser;
     if (!user) {
-      throw new Error('Unregistered email');
+      throw new Error('Incorrect email or password');
     }
 
     const validatePassword = checkPassword(password, user.password);
     if (!validatePassword) {
-      throw new Error('Incorrect password');
+      throw new Error('Incorrect email or password');
     }
 
     const token = tokenGenerate(user.username);
