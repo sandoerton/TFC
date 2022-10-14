@@ -15,6 +15,12 @@ class UserController {
       return res.status(StatusCodes.UNAUTHORIZED).json({ message: e.message });
     }
   };
+
+  public findRole = async (req: Request, res: Response): Promise<Response> => {
+    const { authorization } = req.headers;
+    const role = await this.service.findRole(authorization as unknown as string);
+    return res.status(StatusCodes.OK).json({ role });
+  };
 }
 
 export default UserController;

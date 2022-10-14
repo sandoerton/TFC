@@ -1,5 +1,5 @@
 import IUser from '../interfaces/userInterface';
-import tokenGenerate from '../helpers/token';
+import { tokenGenerate, tokenCheck } from '../helpers/token';
 import Users from '../models/users';
 import checkPassword from '../helpers/bcrypt';
 
@@ -17,6 +17,12 @@ class UserService {
 
     const token = tokenGenerate(user.username);
     return token;
+  };
+
+  findRole = async (token: string): Promise<string> => {
+    const username = tokenCheck(token);
+    const user = await Users.findOne({ where: { username }, raw: true }) as IUser;
+    return user.role;
   };
 }
 
