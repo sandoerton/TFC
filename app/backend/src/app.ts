@@ -1,4 +1,5 @@
 import * as express from 'express';
+import teamRoute from './database/routes/teamRoute';
 import userRoute from './database/routes/userRoute';
 
 class App {
@@ -24,6 +25,7 @@ class App {
     this.app.use(express.json());
     this.app.use(accessControl);
     this.app.use('/login', userRoute);
+    this.app.use('/teams', teamRoute);
   }
 
   public start(PORT: string | number): void {
