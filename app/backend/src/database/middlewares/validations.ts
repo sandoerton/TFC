@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { tokenCheck } from '../helpers/token';
 import IUser from '../interfaces/userInterface';
+import Teams from '../models/teams';
 import Users from '../models/users';
 
 const validate = {
@@ -40,6 +41,21 @@ const validate = {
     } catch (error) {
       return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Token must be a valid token' });
     }
+  },
+
+  teams: async (req: Request, res: Response, next: NextFunction) => {
+    const { homeTeam, awayTeam } = req.body;
+    const MSG = 'It is not possible to create a match with two equal teams';
+    if (homeTeam === awayTeam) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: MSG });
+    }
+
+    const findHomeTeam = await Teams.findByPk(homeTeam, { raw: true });
+    const findAwayTeam = await Teams.findByPk(awayTeam, { raw: true });
+    if (!findHomeTeam || !findAwayTeam) {
+      return res.status(StatusCodes.NOT_FOUND).json({ message: 'There is no team with such id!' });
+    }
+    next();
   },
 };
 

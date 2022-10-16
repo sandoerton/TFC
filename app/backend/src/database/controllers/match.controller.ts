@@ -18,7 +18,18 @@ class MatchController {
       return res.status(StatusCodes.CREATED).json(newMatch);
     } catch (error) {
       const e = error as Error;
-      return res.status(StatusCodes.NOT_FOUND).json({ message: e.message });
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: e.message });
+    }
+  };
+
+  public updateMatch = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    try {
+      await this.service.updateMatch(+id);
+      return res.status(StatusCodes.OK).json({ message: 'Finished' });
+    } catch (error) {
+      const e = error as Error;
+      return res.status(StatusCodes.BAD_REQUEST).json({ message: e.message });
     }
   };
 }
