@@ -19,6 +19,11 @@ class MatchService {
     });
     return matches;
   };
+
+  createMatch = async (dataMatch: IMatch): Promise<IMatch> => {
+    const newMatch = await Matches.create(dataMatch);
+    return newMatch as IMatch;
+  };
 }
 
 export default MatchService;
