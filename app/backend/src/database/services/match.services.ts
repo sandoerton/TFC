@@ -32,6 +32,13 @@ class MatchService {
     }
     return updated;
   };
+
+  upScoreGoals = async (id: number, homeTeamGoals: number, awayTeamGoals: number) => {
+    const updateScore = await Matches.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+    if (!updateScore) {
+      throw new Error('Score goals not updated');
+    }
+  };
 }
 
 export default MatchService;

@@ -7,6 +7,7 @@ const controller = new MatchController();
 
 matchRoute.get('/', controller.findMatches);
 matchRoute.post('/', validate.token, validate.teams, controller.createMatch);
+matchRoute.patch('/:id', controller.upScoreGoals);
 matchRoute.patch('/:id/finish', controller.updateMatch);
 
 export default matchRoute;

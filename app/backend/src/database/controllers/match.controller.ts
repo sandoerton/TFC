@@ -32,6 +32,18 @@ class MatchController {
       return res.status(StatusCodes.BAD_REQUEST).json({ message: e.message });
     }
   };
+
+  public upScoreGoals = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    const { homeTeamGoals, awayTeamGoals } = req.body;
+    try {
+      await this.service.upScoreGoals(+id, homeTeamGoals, awayTeamGoals);
+      return res.status(StatusCodes.OK).json({ message: 'Score updated' });
+    } catch (error) {
+      const e = error as Error;
+      return res.status(StatusCodes.BAD_REQUEST).json({ message: e.message });
+    }
+  };
 }
 
 export default MatchController;
