@@ -13,6 +13,11 @@ class LeaderService {
         association: 'teamHome',
         where: { inProgress: false },
         attributes: ['homeTeamGoals', 'awayTeamGoals'],
+      }, {
+        model: Matches,
+        association: 'teamAway',
+        where: { inProgress: false },
+        attributes: ['homeTeamGoals', 'awayTeamGoals'],
       }],
     });
     return result;
@@ -21,22 +26,43 @@ class LeaderService {
   homeLeader = async (): Promise<ILeader[]> => {
     const allTeams = await this.getAllTeams();
 
-    const board = (allTeams.map((team: any) => ({
+    const homeBoard = (allTeams.map((team: any) => ({
       name: team.teamName,
-      totalPoints: calculate.points(team),
-      totalGames: calculate.games(team),
-      totalVictories: calculate.victories(team),
-      totalDraws: calculate.draws(team),
-      totalLosses: calculate.losses(team),
-      goalsFavor: calculate.favorGoals(team),
-      goalsOwn: calculate.ownGoals(team),
-      goalsBalance: (calculate.favorGoals(team) - calculate.ownGoals(team)),
-      efficiency: Number((calculate.points(team) / (calculate.games(team) * 3)) * 100).toFixed(2),
+      totalPoints: calculate.hPoints(team),
+      totalGames: calculate.hGames(team),
+      totalVictories: calculate.homeVictories(team),
+      totalDraws: calculate.homeDraws(team),
+      totalLosses: calculate.homeLosses(team),
+      goalsFavor: calculate.homeGoals(team),
+      goalsOwn: calculate.homeOwnGoals(team),
+      goalsBalance: (calculate.homeGoals(team) - calculate.homeOwnGoals(team)),
+      efficiency: Number((calculate.hPoints(team) / (calculate.hGames(team) * 3)) * 100).toFixed(2),
     })));
 
-    const orderlyBoard = orderBoard(board);
+    const orderlyHomeBoard = orderBoard(homeBoard);
 
-    return orderlyBoard as unknown as ILeader[];
+    return orderlyHomeBoard as unknown as ILeader[];
+  };
+
+  awayLeader = async (): Promise<ILeader[]> => {
+    const allTeams = await this.getAllTeams();
+
+    const awayBoard = (allTeams.map((team: any) => ({
+      name: team.teamName,
+      totalPoints: calculate.aPoints(team),
+      totalGames: calculate.aGames(team),
+      totalVictories: calculate.awayVictories(team),
+      totalDraws: calculate.awayDraws(team),
+      totalLosses: calculate.awayLosses(team),
+      goalsFavor: calculate.awayGoals(team),
+      goalsOwn: calculate.awayOwnGoals(team),
+      goalsBalance: calculate.awayGoals(team) - calculate.awayOwnGoals(team),
+      efficiency: Number((calculate.aPoints(team) / (calculate.aGames(team) * 3)) * 100).toFixed(2),
+    })));
+
+    const orderlyAwayBoard = orderBoard(awayBoard);
+
+    return orderlyAwayBoard as unknown as ILeader[];
   };
 }
 

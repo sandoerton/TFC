@@ -1,57 +1,111 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const calculate = {
-  points: (teams: any) => {
-    let totalPoints = 0;
+  hPoints: (teams: any) => {
+    let homePoints = 0;
     teams.teamHome.forEach((goals: any) => {
-      if (goals.homeTeamGoals > goals.awayTeamGoals) totalPoints += 3;
-      if (goals.homeTeamGoals === goals.awayTeamGoals) totalPoints += 1;
+      if (goals.homeTeamGoals > goals.awayTeamGoals) homePoints += 3;
+      if (goals.homeTeamGoals === goals.awayTeamGoals) homePoints += 1;
     });
-    return totalPoints;
+    return homePoints;
   },
 
-  games: (teams: any) => {
-    const totalGames = teams.teamHome.length;
-    return totalGames;
+  aPoints: (teams: any) => {
+    let awayPoints = 0;
+    teams.teamAway.forEach((goals: any) => {
+      if (goals.awayTeamGoals > goals.homeTeamGoals) awayPoints += 3;
+      if (goals.awayTeamGoals === goals.homeTeamGoals) awayPoints += 1;
+    });
+    return awayPoints;
   },
 
-  victories: (teams: any) => {
-    let totalVictories = 0;
-    teams.teamHome.forEach((goals: any) => {
-      if (goals.homeTeamGoals > goals.awayTeamGoals) totalVictories += 1;
-    });
-    return totalVictories;
+  hGames: (teams: any) => {
+    const hGames = teams.teamHome.length;
+    return hGames;
   },
 
-  draws: (teams: any) => {
-    let totalDraws = 0;
-    teams.teamHome.forEach((goals: any) => {
-      if (goals.homeTeamGoals === goals.awayTeamGoals) totalDraws += 1;
-    });
-    return totalDraws;
+  aGames: (teams: any) => {
+    const aGames = teams.teamAway.length;
+    return aGames;
   },
 
-  losses: (teams: any) => {
-    let totalLosses = 0;
+  homeVictories: (teams: any) => {
+    let hVictories = 0;
     teams.teamHome.forEach((goals: any) => {
-      if (goals.homeTeamGoals < goals.awayTeamGoals) totalLosses += 1;
+      if (goals.homeTeamGoals > goals.awayTeamGoals) hVictories += 1;
     });
-    return totalLosses;
+    return hVictories;
   },
 
-  favorGoals: (teams: any) => {
-    let totalFavGoals = 0;
-    teams.teamHome.forEach((goals: any) => {
-      totalFavGoals += goals.homeTeamGoals;
+  awayVictories: (teams: any) => {
+    let aVictories = 0;
+    teams.teamAway.forEach((goals: any) => {
+      if (goals.awayTeamGoals > goals.homeTeamGoals) aVictories += 1;
     });
-    return totalFavGoals;
+    return aVictories;
   },
 
-  ownGoals: (teams: any) => {
-    let totalOwnGoals = 0;
+  homeDraws: (teams: any) => {
+    let hDraws = 0;
     teams.teamHome.forEach((goals: any) => {
-      totalOwnGoals += goals.awayTeamGoals;
+      if (goals.homeTeamGoals === goals.awayTeamGoals) hDraws += 1;
     });
-    return totalOwnGoals;
+    return hDraws;
+  },
+
+  awayDraws: (teams: any) => {
+    let aDraws = 0;
+    teams.teamAway.forEach((goals: any) => {
+      if (goals.awayTeamGoals === goals.homeTeamGoals) aDraws += 1;
+    });
+    return aDraws;
+  },
+
+  homeLosses: (teams: any) => {
+    let hLosses = 0;
+    teams.teamHome.forEach((goals: any) => {
+      if (goals.homeTeamGoals < goals.awayTeamGoals) hLosses += 1;
+    });
+    return hLosses;
+  },
+
+  awayLosses: (teams: any) => {
+    let aLosses = 0;
+    teams.teamAway.forEach((goals: any) => {
+      if (goals.awayTeamGoals < goals.homeTeamGoals) aLosses += 1;
+    });
+    return aLosses;
+  },
+
+  homeGoals: (teams: any) => {
+    let hGoals = 0;
+    teams.teamHome.forEach((goals: any) => {
+      hGoals += goals.homeTeamGoals;
+    });
+    return hGoals;
+  },
+
+  awayGoals: (teams: any) => {
+    let aGoals = 0;
+    teams.teamAway.forEach((goals: any) => {
+      aGoals += goals.awayTeamGoals;
+    });
+    return aGoals;
+  },
+
+  homeOwnGoals: (teams: any) => {
+    let hOwnGoals = 0;
+    teams.teamHome.forEach((goals: any) => {
+      hOwnGoals += goals.awayTeamGoals;
+    });
+    return hOwnGoals;
+  },
+
+  awayOwnGoals: (teams: any) => {
+    let aOwnGoals = 0;
+    teams.teamAway.forEach((goals: any) => {
+      aOwnGoals += goals.homeTeamGoals;
+    });
+    return aOwnGoals;
   },
 };
 
