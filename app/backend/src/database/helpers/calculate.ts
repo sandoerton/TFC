@@ -18,6 +18,19 @@ const calculate = {
     return awayPoints;
   },
 
+  tPoints: (teams: any) => {
+    let totalPoints = 0;
+    teams.teamHome.forEach((goals: any) => {
+      if (goals.homeTeamGoals > goals.awayTeamGoals) totalPoints += 3;
+      if (goals.homeTeamGoals === goals.awayTeamGoals) totalPoints += 1;
+    });
+    teams.teamAway.forEach((goals: any) => {
+      if (goals.awayTeamGoals > goals.homeTeamGoals) totalPoints += 3;
+      if (goals.awayTeamGoals === goals.homeTeamGoals) totalPoints += 1;
+    });
+    return totalPoints;
+  },
+
   hGames: (teams: any) => {
     const hGames = teams.teamHome.length;
     return hGames;

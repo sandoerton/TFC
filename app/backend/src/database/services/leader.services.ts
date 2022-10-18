@@ -35,7 +35,7 @@ class LeaderService {
       totalLosses: calculate.homeLosses(team),
       goalsFavor: calculate.homeGoals(team),
       goalsOwn: calculate.homeOwnGoals(team),
-      goalsBalance: (calculate.homeGoals(team) - calculate.homeOwnGoals(team)),
+      goalsBalance: calculate.homeGoals(team) - calculate.homeOwnGoals(team),
       efficiency: Number((calculate.hPoints(team) / (calculate.hGames(team) * 3)) * 100).toFixed(2),
     })));
 
@@ -63,6 +63,29 @@ class LeaderService {
     const orderlyAwayBoard = orderBoard(awayBoard);
 
     return orderlyAwayBoard as unknown as ILeader[];
+  };
+
+  leader = async (): Promise<ILeader[]> => {
+    const allTeams = await this.getAllTeams();
+
+    const board = (allTeams.map((team: any) => ({
+      name: team.teamName,
+      totalPoints: calculate.tPoints(team),
+      totalGames: calculate.hGames(team) + calculate.aGames(team),
+      totalVictories: calculate.homeVictories(team) + calculate.awayVictories(team),
+      totalDraws: calculate.homeDraws(team) + calculate.awayDraws(team),
+      totalLosses: calculate.homeLosses(team) + calculate.awayLosses(team),
+      goalsFavor: calculate.homeGoals(team) + calculate.awayGoals(team),
+      goalsOwn: calculate.homeOwnGoals(team) + calculate.awayOwnGoals(team),
+      goalsBalance: ((calculate.homeGoals(team) + calculate.awayGoals(team))
+      - (calculate.homeOwnGoals(team) + calculate.awayOwnGoals(team))),
+      efficiency: Number((calculate.tPoints(team)
+      / ((calculate.hGames(team) + calculate.aGames(team)) * 3)) * 100).toFixed(2),
+    })));
+
+    const orderlyBoard = orderBoard(board);
+
+    return orderlyBoard as unknown as ILeader[];
   };
 }
 
