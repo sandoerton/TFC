@@ -7,39 +7,37 @@ import { app } from '../app';
 import Example from '../database/models/ExampleModel';
 
 import { Response } from 'superagent';
+import Users from '../database/models/users';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Testando User Controller', () => {
-  /**
-   * Exemplo do uso de stubs com tipos
-   */
+describe('Testando Login:', () => {
 
-  // let chaiHttpResponse: Response;
+  let chaiHttpResponse: Response;
 
-  // before(async () => {
-  //   sinon
-  //     .stub(Example, "findOne")
-  //     .resolves({
-  //       ...<Seu mock>
-  //     } as Example);
-  // });
+  before(async () => {
+    sinon
+      .stub(Users, "findOne")
+      .resolves({
+        id: 1,
+        username: 'Teste',
+        role: 'user',
+        email: 'teste@test.com',
+        password: 'secret_user'
+      } as Users);
+  });
 
-  // after(()=>{
-  //   (Example.findOne as sinon.SinonStub).restore();
-  // })
+  after(() => {
+    (Users.findOne as sinon.SinonStub).restore();
+  })
 
-  // it('...', async () => {
-  //   chaiHttpResponse = await chai
-  //      .request(app)
-  //      ...
-
-  //   expect(...)
-  // });
-
-  it('Seu sub-teste', () => {
-    expect(false).to.be.eq(true);
+  it('Caso sucesso: Retorna o Token', async () => {
+    chaiHttpResponse = await chai.request(app).post('/login').send({
+      username: 'Teste',
+      password: 'secret_user',
+    })
+    expect(chaiHttpResponse.body).to.have.property('token');
   });
 });
