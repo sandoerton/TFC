@@ -4,8 +4,6 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 
 import { app } from '../app';
-import Example from '../database/models/ExampleModel';
-
 import { Response } from 'superagent';
 import Users from '../database/models/users';
 
@@ -35,7 +33,7 @@ describe('Testando Login:', () => {
 
   it('Caso sucesso: Retorna o Token', async () => {
     chaiHttpResponse = await chai.request(app).post('/login').send({
-      username: 'Teste',
+      email: 'teste@test.com',
       password: 'secret_user',
     })
     expect(chaiHttpResponse.body).to.have.property('token');
